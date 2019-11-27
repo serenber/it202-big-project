@@ -5,20 +5,25 @@
     <meta charset="utf-8">
     <link rel='manifest' href='./manifest.json'>
     <meta name="viewport" content="width=device-width">
-    <title>Testing</title>
+    <title>ReptiTrack</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/2.0.4/dexie.min.js"></script>
+
     <style>
-      body {margin: 0;}
-      :root {
-        --mdc-theme-primary: #498e45;
-      }
-      .template {display:none;}
+        body {
+            margin: 0;
+        }
+        :root {
+            --mdc-theme-primary: #498e45;
+        }
+        .template {
+            display:none;
+        }
     </style>
 
 
@@ -30,15 +35,15 @@
             <nav class="mdc-list">
                 <a class="mdc-list-item mdc-list-item--activated" href="#page1" aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page1</i>
-                    <span class="mdc-list-item__text">Page 1</span>
+                    <span class="mdc-list-item__text">Pet Profiles</span>
                 </a>
                 <a class="mdc-list-item" href="#page2">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page2</i>
-                    <span class="mdc-list-item__text">Page 2</span>
+                    <span class="mdc-list-item__text">Activity Tracker</span>
                 </a>
                 <a class="mdc-list-item" href="#page3">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page3</i>
-                    <span class="mdc-list-item__text">Page 3</span>
+                    <span class="mdc-list-item__text">Calendar</span>
                 </a>
             </nav>
         </div>
@@ -50,32 +55,41 @@
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
-                <span class="mdc-top-app-bar__title">Testing</span>
+                <span class="mdc-top-app-bar__title">ReptiTrack</span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                 <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download">file_download</button>
                 <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Print this page">print</button>
                 <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</button>
+                <!--                 <button onclick="goBack()">Go Back</button> -->
             </section>
         </div>
     </header>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page1" style="display: none">
-        <h1 style="font-weight:bold">First page header</h1>
+        <h1 style="font-weight:bold">Pet Profiles</h1>
         <p style="color:gray">
-            First page p element
+            <input type="text" id="petName" placeholder="Enter your pet's name">
+            <input type="text" id="petAge" placeholder="Enter your pet's age">
+            <input type="text" id="petWeight" placeholder="Enter your pet's weight">
+            <button id="btnSave">Save</button>
+            <button id="btnShow">Show</button>
         </p>
+        <div id="petsList">
+            <ul>
+            </ul>
+        </div>
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page2" style="display: none">
-        <h1 style="font-weight:bold">Second page header</h1>
+        <h1 style="font-weight:bold">Activity Tracker</h1>
         <p style="color:gray">
             Second page p element
         </p>
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
-        <h1 style="font-weight:bold">Third page header</h1>
+        <h1 style="font-weight:bold">Calendar</h1>
         <p style="color:gray">
             Third page p element
         </p>
@@ -100,12 +114,58 @@
                 drawer.open = false;
                 hideScreens();
                 var target = $(this).attr("href");
+                //console.log("drawer" + target)
                 $(target).show();
             })
         };
     </script>
 
     <script>
+        const db = new Dexie('MyDatabase');
+         // Declare tables, IDs and indexes
+        db.version(1).stores({
+            pets: '++id, pet_name, pet_age, pet_weight',
+            history: '++id'
+        });
+        $("#btnSave").on("click", function() {
+            var name = $("#petName").val()
+            var age = $("#petAge").val()
+            var weight = $("#petWeight").val()
+            db.pets.add({
+                pet_name: name,
+                pet_age: age,
+                pet_weight: weight
+            }).then(function() {
+                alert(name + " added!")
+            });
+        });
+         //show all pets in the DB
+        $("#btnShow").on("click", function() {
+            console.log("show button clicked")
+            $("#petsList ul").empty()
+            db.pets.each(pet => showPet(pet));
+        });
+
+        function showPet(pet) {
+            var li = $("<li>");
+            li.text(pet.pet_name);
+            $("#petsList ul").append(li);
+        }
+    </script>
+
+    <!-- NOT SURE ABOUT HOW TO ACTUALLY ADD THIS, CAN'T FIGURE OUT HOW TO SHOW THE TARGET SCREEN
+<script>
+function goBack() {
+  window.history.back();
+    console.log(window.history)
+    hideScreens();
+    var target = window.location.href.slice(window.location.href.search("#"));
+    console.log("goBack " + target)
+    $(target).show();
+}
+</script> -->
+
+    <!--     <script>
         // register the service worker for offline use
         if('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(function() {
@@ -113,6 +173,6 @@
             });
         }
     </script>
-</body>
+</body> -->
 
 </html>

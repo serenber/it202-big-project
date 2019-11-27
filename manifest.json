@@ -1,0 +1,14 @@
+{
+  "name": "ReptiTrack",
+  "short_name": "ReptiTrack",
+  "icons": [ {
+        "src": "./bearded-dragon-app2.png",
+        "type": "image/png",
+        "sizes": "200x200"
+      }],
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#498e45",
+  "theme_color": "#498e45"
+}
