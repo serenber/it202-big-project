@@ -24,8 +24,41 @@
         .template {
             display:none;
         }
+        .dropbtn {
+            background-color: #498e45;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
     </style>
-
 
 </head>
 
@@ -75,22 +108,22 @@
             <button id="btnSave">Save</button>
             <button id="btnShow">Show</button>
         </p>
-        
+
         <div class="mdc-data-table">
-  <table class="mdc-data-table__table" aria-label="Dessert calories">
-    <thead>
-      <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Name</th>
-        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Age (Years)</th>
-        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Weight (Grams)</th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
-      </tr>
-    </thead>
-    <tbody id="petsList" class="mdc-data-table__content">
-    </tbody>
-  </table>
-</div>
-        
+            <table class="mdc-data-table__table" aria-label="Dessert calories">
+                <thead>
+                    <tr class="mdc-data-table__header-row">
+                        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Name</th>
+                        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Age (Years)</th>
+                        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Weight (Grams)</th>
+                        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="petsList" class="mdc-data-table__content">
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page2" style="display: none">
@@ -98,6 +131,9 @@
         <p style="color:gray">
             Second page p element
         </p>
+        <div class="dropdown">
+            <button id="btnDrop" class="dropbtn">Dropdown</button>
+        </div>
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
@@ -153,33 +189,39 @@
         });
          //show all pets in the DB
         $("#btnShow").on("click", function() {
-            console.log("show button clicked")
             $("#petsList").empty()
             db.pets.each(pet => showPet(pet));
         });
+        
+        $("#btnDrop").on("click", function() {
+            var dv = $("<div>"); dv.addClass("dropdown-content");
+            db.pets.each(pet => addList(dv, pet));
+            $("#btnDrop").append(dv);
+        });
 
+        function addList(dv, pet){
+            var a1 = $("<a href='#'>"); a1.text(pet.pet_name);
+            dv.append(a1);
+        }
+        
         function showPet(pet) {
-            
-            var tr = $("<tr>"); tr.addClass("mdc-data-table__row");
-            var td1 = $("<td>"); 
-                td1.addClass("mdc-data-table__cell"); 
-                td1.text(pet.pet_name);
-                tr.append(td1);
-            
-            var td2 = $("<td>"); 
-                td2.addClass("mdc-data-table__cell mdc-data-table__cell--numeric"); 
+            var tr = $("<tr>");
+            tr.addClass("mdc-data-table__row");
+            var td1 = $("<td>");
+            td1.addClass("mdc-data-table__cell");
+            td1.text(pet.pet_name);
+            tr.append(td1);
+            var td2 = $("<td>");
+            td2.addClass("mdc-data-table__cell mdc-data-table__cell--numeric");
             td2.text(pet.pet_age);
-                tr.append(td2);
-            
-            var td3 = $("<td>"); 
-                td3.addClass("mdc-data-table__cell mdc-data-table__cell--numeric"); 
+            tr.append(td2);
+            var td3 = $("<td>");
+            td3.addClass("mdc-data-table__cell mdc-data-table__cell--numeric");
             td3.text(pet.pet_weight);
-                tr.append(td3);
-            
-            var td4 = $("<td>"); 
-                td4.addClass("mdc-data-table__cell"); 
-                tr.append(td4);
-            
+            tr.append(td3);
+            var td4 = $("<td>");
+            td4.addClass("mdc-data-table__cell");
+            tr.append(td4);
             $("#petsList").append(tr);
         }
     </script>
