@@ -94,8 +94,13 @@
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page2" style="display: none">
         <h1 style="font-weight:bold">Activity Tracker</h1>
+        <p>Enter your pet's name and activity level (0 - 10)</p>
+        <p>Note: the entered name will be the pet's activity level displayed</p>
         <p style="color:gray">
-            Second page p element
+            <input type="text" id="petName2" placeholder="Enter your pet's name">
+            <input type="text" id="petActivity" placeholder="Enter your pet's activity level">
+            <button id="btnSave2">Save</button>
+            <button id="btnShow2">Show</button>
         </p>
     </div>
 
@@ -136,8 +141,10 @@
          // Declare tables, IDs and indexes
         db.version(1).stores({
             pets: '++id, pet_name, pet_age, pet_weight',
+            activities: '++id, pet_name, pet_activity',
             history: '++id'
         });
+        
         $("#btnSave").on("click", function() {
             var name = $("#petName").val()
             var age = $("#petAge").val()
@@ -150,10 +157,30 @@
                 alert(name + " added!")
             });
         });
+        
          //show all pets in the DB
         $("#btnShow").on("click", function() {
             $("#petsList").empty()
             db.pets.each(pet => showPet(pet));
+        });
+        
+//Activity tracker page buttons
+        //save the pet's activity level
+        $("#btnSave2").on("click", function() {
+            var name = $("#petName2").val()
+            var activity = $("#petActivity").val()
+            db.activities.add({
+                pet_name: name,
+                pet_activity: activity
+            }).then(function() {
+                alert(name + " added!")
+            });
+        });
+         //show the specified pet's activity level
+        $("#btnShow2").on("click", function() {
+//need to figure out how to use d3.js to display this info
+            console.log("activity show button clicked")
+            //db.activities.each();
         });
         
         function showPet(pet) {
