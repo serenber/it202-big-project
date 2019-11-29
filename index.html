@@ -24,40 +24,6 @@
         .template {
             display:none;
         }
-        .dropbtn {
-            background-color: #498e45;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-        }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #ddd;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
-        }
     </style>
 
 </head>
@@ -131,9 +97,6 @@
         <p style="color:gray">
             Second page p element
         </p>
-        <div class="dropdown">
-            <button id="btnDrop" class="dropbtn">Dropdown</button>
-        </div>
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
@@ -192,17 +155,6 @@
             $("#petsList").empty()
             db.pets.each(pet => showPet(pet));
         });
-        
-        $("#btnDrop").on("click", function() {
-            var dv = $("<div>"); dv.addClass("dropdown-content");
-            db.pets.each(pet => addList(dv, pet));
-            $("#btnDrop").append(dv);
-        });
-
-        function addList(dv, pet){
-            var a1 = $("<a href='#'>"); a1.text(pet.pet_name);
-            dv.append(a1);
-        }
         
         function showPet(pet) {
             var tr = $("<tr>");
