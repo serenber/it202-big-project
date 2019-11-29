@@ -74,6 +74,7 @@
             <input type="text" id="petWeight" placeholder="Enter your pet's weight">
             <button id="btnSave">Save</button>
             <button id="btnShow">Show</button>
+            <button id="btnCamera">Camera</button>
         </p>
 
         <div class="mdc-data-table">
@@ -91,6 +92,12 @@
             </table>
         </div>
 
+    </div>
+
+    <div class="content" id="camera" style="display: none">
+        <video id="player" controls autoplay></video>
+        <button id="capture">Capture</button>
+        <canvas id="canvas" width=320 height=240></canvas>
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page2" style="display: none">
@@ -134,7 +141,6 @@
                 drawer.open = false;
                 hideScreens();
                 var target = $(this).attr("href");
-                //console.log("drawer" + target)
                 $(target).show();
             })
         };
@@ -160,6 +166,10 @@
                 alert(name + " added!")
             });
         });
+        $("#btnCamera").on("click", function() {
+            hideScreens();
+            $("#camera").show();
+        });
          //show all pets in the DB
         $("#btnShow").on("click", function() {
             $("#petsList").empty()
@@ -180,14 +190,14 @@
          //show the specified pet's activity level
         $("#btnShow2").on("click", function() {
             $("#activity_dataviz").html("");
-//need to figure out how to use d3.js to display this info
+            //need to figure out how to use d3.js to display this info
             console.log("activity show button clicked");
             hideScreens();
             var data = [];
             db.activities.each(activity => saveData(data, activity));
             console.log(data)
             console.log(data.length)
-//the length should be non-zero at this point and for some reason it isn't...
+            //the length should be non-zero at this point and for some reason it isn't...
             for(let q = 0; q < data.length; q++) {
                 console.log("q = " + q)
                 console.log(data[q][0])
@@ -251,8 +261,30 @@
         function saveData(data, activity) {
             data.push([activity.id, activity.pet_activity]);
         }
-    </script>
-
+            const player = document.getElementById('player');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+            const captureButton = document.getElementById('capture');
+            const constraints = {
+                video: true,
+            };
+            captureButton.addEventListener('click', () => {
+                // Draw the video frame to the canvas.
+                context.drawImage(player, 0, 0, canvas.width, canvas.height);
+                //save it to the DB
+                
+                
+//get the DB object
+//update it to inclue a picture
+  //https://stackoverflow.com/questions/11217309/how-do-i-update-data-in-indexeddb
+  //https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put
+                
+            });
+             // Attach the video stream to the video element and autoplay.
+            navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+                player.srcObject = stream;
+            });
+        </script>
     <!-- NOT SURE ABOUT HOW TO ACTUALLY ADD THIS, CAN'T FIGURE OUT HOW TO SHOW THE TARGET SCREEN
 <script>
 function goBack() {
