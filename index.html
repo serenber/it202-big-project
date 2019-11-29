@@ -104,8 +104,8 @@
             <button id="btnShow2">Show</button>
         </p>
     </div>
-    
-    <div class = "content" id="activity_dataviz" style="display: none" ></div>
+
+    <div class="content" id="activity_dataviz" style="display: none"></div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
         <h1 style="font-weight:bold">Calendar</h1>
@@ -115,7 +115,7 @@
     </div>
 
     <script src="script.js"></script>
-    
+
     <script>
         window.mdc.autoInit();
         const drawer = document.querySelector('.mdc-drawer').MDCDrawer;
@@ -141,7 +141,6 @@
     </script>
 
     <script>
-        var data = [];
         const db = new Dexie('MyDatabase');
          // Declare tables, IDs and indexes
         db.version(1).stores({
@@ -149,7 +148,6 @@
             activities: '++id, pet_name, pet_activity',
             history: '++id'
         });
-        
         $("#btnSave").on("click", function() {
             var name = $("#petName").val()
             var age = $("#petAge").val()
@@ -162,15 +160,13 @@
                 alert(name + " added!")
             });
         });
-        
          //show all pets in the DB
         $("#btnShow").on("click", function() {
             $("#petsList").empty()
             db.pets.each(pet => showPet(pet));
         });
-        
-//Activity tracker page buttons
-        //save the pet's activity level
+         //Activity tracker page buttons
+         //save the pet's activity level
         $("#btnSave2").on("click", function() {
             var name = $("#petName2").val()
             var activity = $("#petActivity").val()
@@ -183,62 +179,54 @@
         });
          //show the specified pet's activity level
         $("#btnShow2").on("click", function() {
+            $("#activity_dataviz").html("");
 //need to figure out how to use d3.js to display this info
             console.log("activity show button clicked");
             hideScreens();
-            db.activities.each(activity => saveData(activity));
+            var data = [];
+            db.activities.each(activity => saveData(data, activity));
             console.log(data)
-            
+            console.log(data.length)
+//the length should be non-zero at this point and for some reason it isn't...
+            for(let q = 0; q < data.length; q++) {
+                console.log("q = " + q)
+                console.log(data[q][0])
+                console.log(data[q][1])
+            }
             var w = 600;
-var h = 300;
-
-var dataset = [
-  [1, 6], [480, 270], [250, 150], [100, 99], [330, 285],
-  [410, 36], [475, 132], [25, 180], [85, 63], [220, 240]
-];
-
+            var h = 300;
+            var dataset = [
+                [1, 6],
+                [480, 270],
+                [250, 150],
+                [100, 99],
+                [330, 285],
+                [410, 36],
+                [475, 132],
+                [25, 180],
+                [85, 63],
+                [220, 240]
+            ];
             console.log(dataset)
-            
-//Create SVG element
-var svg = d3.select("#activity_dataviz")
-  .append("svg")
-  .attr("width", w)
-  .attr("height", h);
-
-svg.selectAll("circle")
-  .data(dataset)
-  .enter()
-  .append("circle")
-  .attr("cx", function(d) {
-    return d[0];
-  })
-  .attr("cy", function(d) {
-    return d[1];
-  })
-  .attr("r", function(d) {
-    return Math.sqrt(h - d[1]);
-  })
-  .attr("fill", "#00aa88");
-
-svg.selectAll("text")
-  .data(dataset)
-  .enter()
-  .append("text")
-  .text(function(d) {
-    return d[0] + "," + d[1];
-  })
-  .attr("x", function(d) {
-    return d[0];
-  })
-  .attr("y", function(d) {
-    return d[1];
-  })
-  .attr("font-size", "15px")
-  .attr("fill", "white");
-            
+            //Create SVG element
+            var svg = d3.select("#activity_dataviz").append("svg").attr("width", w).attr("height", h);
+            svg.selectAll("circle").data(dataset).enter().append("circle").attr("cx", function(d) {
+                return d[0];
+            }).attr("cy", function(d) {
+                return d[1];
+            }).attr("r", function(d) {
+                return 10; //set the radius of the circle to be 10 pixels
+            }).attr("fill", "#498e45");
+            svg.selectAll("text").data(dataset).enter().append("text").text(function(d) {
+                return d[0] + "," + d[1];
+            }).attr("x", function(d) {
+                return d[0];
+            }).attr("y", function(d) {
+                return d[1];
+            }).attr("font-size", "15px").attr("fill", "gray");
             $("#activity_dataviz").show();
         });
-        
+
         function showPet(pet) {
             var tr = $("<tr>");
             tr.addClass("mdc-data-table__row");
@@ -259,13 +247,12 @@ svg.selectAll("text")
             tr.append(td4);
             $("#petsList").append(tr);
         }
-        
-        function saveData(activity) {
+
+        function saveData(data, activity) {
             data.push([activity.id, activity.pet_activity]);
         }
-        
     </script>
-    
+
     <!-- NOT SURE ABOUT HOW TO ACTUALLY ADD THIS, CAN'T FIGURE OUT HOW TO SHOW THE TARGET SCREEN
 <script>
 function goBack() {
