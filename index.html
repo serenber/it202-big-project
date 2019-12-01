@@ -43,7 +43,11 @@
                 </a>
                 <a class="mdc-list-item" href="#page3">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page3</i>
-                    <span class="mdc-list-item__text">Weather and Local Businesses</span>
+                    <span class="mdc-list-item__text">Weather</span>
+                </a>
+                <a class="mdc-list-item" href="#page4">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page4</i>
+                    <span class="mdc-list-item__text">Local Businesses</span>
                 </a>
             </nav>
         </div>
@@ -103,21 +107,25 @@
     <div class="mdc-top-app-bar--fixed-adjust content" id="page2" style="display: none">
         <h1 style="font-weight:bold">Activity Tracker</h1>
         <p>Enter your pet's name and activity level (0 - 10)</p>
-        <p>Note: the entered name will be the pet's activity level displayed</p>
         <p style="color:gray">
             <input type="text" id="petName2" placeholder="Enter your pet's name">
             <input type="text" id="petActivity" placeholder="Enter your pet's activity level">
             <button id="btnSave2">Save</button>
-            <button id="btnShow2">Show</button>
         </p>
     </div>
 
     <div class="content" id="activity_dataviz" style="display: none"></div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
-        <h1 style="font-weight:bold">Calendar</h1>
+        <h1 style="font-weight:bold">Weather</h1>
         <p style="color:gray">
             Third page p element
+        </p>
+    </div>
+    <div class="mdc-top-app-bar--fixed-adjust content" id="page4" style="display: none">
+        <h1 style="font-weight:bold">Local Businesses</h1>
+        <p style="color:gray">
+            Fourth page p element
         </p>
     </div>
 
@@ -186,55 +194,6 @@
             }).then(function() {
                 alert(name + " added!")
             });
-        });
-         //show the specified pet's activity level
-        $("#btnShow2").on("click", function() {
-            $("#activity_dataviz").html("");
-            //need to figure out how to use d3.js to display this info
-            console.log("activity show button clicked");
-            hideScreens();
-            var data = [];
-            db.activities.each(activity => saveData(data, activity));
-            console.log(data)
-            console.log(data.length)
-            //the length should be non-zero at this point and for some reason it isn't...
-            for(let q = 0; q < data.length; q++) {
-                console.log("q = " + q)
-                console.log(data[q][0])
-                console.log(data[q][1])
-            }
-            var w = 600;
-            var h = 300;
-            var dataset = [
-                [1, 6],
-                [480, 270],
-                [250, 150],
-                [100, 99],
-                [330, 285],
-                [410, 36],
-                [475, 132],
-                [25, 180],
-                [85, 63],
-                [220, 240]
-            ];
-            console.log(dataset)
-            //Create SVG element
-            var svg = d3.select("#activity_dataviz").append("svg").attr("width", w).attr("height", h);
-            svg.selectAll("circle").data(dataset).enter().append("circle").attr("cx", function(d) {
-                return d[0];
-            }).attr("cy", function(d) {
-                return d[1];
-            }).attr("r", function(d) {
-                return 10; //set the radius of the circle to be 10 pixels
-            }).attr("fill", "#498e45");
-            svg.selectAll("text").data(dataset).enter().append("text").text(function(d) {
-                return d[0] + "," + d[1];
-            }).attr("x", function(d) {
-                return d[0];
-            }).attr("y", function(d) {
-                return d[1];
-            }).attr("font-size", "15px").attr("fill", "gray");
-            $("#activity_dataviz").show();
         });
 
         function showPet(pet) {
