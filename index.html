@@ -262,7 +262,7 @@
                 zoom: 10,
                 center: chicago
             });
-            //generate the database query
+            //generate the database query for the map info
             var markers = [];
             var endpoint = "https://data.cityofchicago.org/resource/uupf-x98q.json";
             var query = endpoint + "?$where=business_activity%20like%20%27%25Animal%25%27%20or%20license_description%20like%20%27%25Animal%25%27";
@@ -282,8 +282,8 @@
                     });
                     var marker = new google.maps.Marker({
                         position: {
-                            lat: parseFloat(v.location.latitude),
-                            lng: parseFloat(v.location.longitude)
+                            lat: parseFloat(v.latitude),
+                            lng: parseFloat(v.longitude)
                         },
                         map: map,
                         title: v.doing_business_as_name
@@ -295,6 +295,19 @@
                 });
             });
         }
+        
+        //generate the database query for the weather info
+        var endpoint2 = "https://api.openweathermap.org/data/2.5/weather";
+        var query2 = endpoint2 + "?q=Chicago,us&APPID=c904248515d72f67dd5a0f990b1f727f";
+        $.get(query2, function(response2) {
+            console.log(response2)
+            
+            console.log(response2.main.humidity)
+            console.log(response2.main.temp)
+            
+            console.log(response2.weather[0].main)
+            console.log(response2.weather[0].description)
+        });
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCapZ69aCbon_uaFxqK_SmrMXmRCocI9jQ&callback=initMap">
     </script>
