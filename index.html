@@ -36,6 +36,14 @@
             margin: 0;
             padding: 0;
         }
+        
+        .my-card-content {
+          padding: 16px;
+        }
+        .my-card {
+          height: 350px;
+          width: 350px;
+        }
     </style>
 
 </head>
@@ -93,7 +101,7 @@
         </p>
 
         <div class="mdc-data-table">
-            <table class="mdc-data-table__table" aria-label="Dessert calories">
+            <table class="mdc-data-table__table" aria-label="Pet Profiles">
                 <thead>
                     <tr class="mdc-data-table__header-row">
                         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Name</th>
@@ -129,9 +137,6 @@
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
         <h1 style="font-weight:bold">Weather</h1>
-        <p style="color:gray">
-            Third page p element
-        </p>
     </div>
     <div class="mdc-top-app-bar--fixed-adjust content" id="page4" style="display: none">
     </div>
@@ -302,11 +307,25 @@
         $.get(query2, function(response2) {
             console.log(response2)
             
-            console.log(response2.main.humidity)
-            console.log(response2.main.temp)
+            var d1 = $('<div class="mdc-card my-card">');
+              var d2 = $('<div class="mdc-card__primary-action my-card__primary-action" tabindex="0">');
+                var d3 = $('<div class="mdc-card__media mdc-card__media--16-9 my-card__media" style="background-image: url(&quot;https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg&quot;);">');
+                d2.append(d3);
+                var d4 = $('<div class="my-card__primary">');
+                  var h2 = $('<h2 class="my-card__title mdc-typography mdc-typography--headline6"></h2>');
+                    h2.text("Temperature: " + response2.main.temp)
+//I need to figure out what units are being used for this temperature
+                  var h3 = $('<h3 class="my-card__subtitle mdc-typography mdc-typography--subtitle2"></h3>');
+                    h3.text(response2.weather[0].description);
+                  d4.append(h2);
+                  d4.append(h3);
+                d2.append(d4);
+                var d5 = $('<div class="my-card__secondary mdc-typography mdc-typography--body2"></div>');
+                  d5.text("Humidity: " + response2.main.humidity);
+                d2.append(d5);
+              d1.append(d2);
             
-            console.log(response2.weather[0].main)
-            console.log(response2.weather[0].description)
+            $("#page3").append(d1);
         });
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCapZ69aCbon_uaFxqK_SmrMXmRCocI9jQ&callback=initMap">
