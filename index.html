@@ -27,7 +27,7 @@
         }
         /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-        #page4 {
+        #business {
             height: 100%;
         }
         /* Optional: Makes the sample page fill the window. */
@@ -58,20 +58,20 @@
                     <span class="mdc-list-item__text sr-only">Home</span>
                 </a>
                 
-                <a class="mdc-list-item mdc-list-item--activated" href="#page1" aria-current="page">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page1</i>
+                <a class="mdc-list-item mdc-list-item--activated" href="#profiles" aria-current="page">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">profiles</i>
                     <span class="mdc-list-item__text">Pet Profiles</span>
                 </a>
-                <a class="mdc-list-item" href="#page2">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page2</i>
+                <a class="mdc-list-item" href="#activity">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">activity</i>
                     <span class="mdc-list-item__text">Activity Tracker</span>
                 </a>
-                <a class="mdc-list-item" href="#page3">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page3</i>
+                <a class="mdc-list-item" href="#weather">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">weather</i>
                     <span class="mdc-list-item__text">Weather</span>
                 </a>
-                <a class="mdc-list-item" href="#page4">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page4</i>
+                <a class="mdc-list-item" href="#business">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">business</i>
                     <span class="mdc-list-item__text">Local Businesses</span>
                 </a>
             </nav>
@@ -97,6 +97,7 @@
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="home">
       <h1 style="font-weight:bold">Welcome!</h1>
+<!-- I wish that all this stuff looked a bit nicer than it does -->
     <p style="color:gray">
         On the Pet Profiles page you can add and see all pets currently being tracked.<br>
         On the Activity Tracker page you can monitor your pet's energy levels.<br>
@@ -105,7 +106,7 @@
     </p>
   </div>
     
-    <div class="mdc-top-app-bar--fixed-adjust content" id="page1" style="display: none">
+    <div class="mdc-top-app-bar--fixed-adjust content" id="profiles" style="display: none">
         <h1 style="font-weight:bold">Pet Profiles</h1>
         <p style="color:gray">
             <input type="text" id="petName" placeholder="Enter your pet's name">
@@ -139,7 +140,7 @@
         <canvas id="canvas" width=320 height=240></canvas>
     </div>
 
-    <div class="mdc-top-app-bar--fixed-adjust content" id="page2" style="display: none">
+    <div class="mdc-top-app-bar--fixed-adjust content" id="activity" style="display: none">
         <h1 style="font-weight:bold">Activity Tracker</h1>
         <p>Enter your pet's name and activity level (0 - 10)</p>
         <p style="color:gray">
@@ -149,12 +150,10 @@
         </p>
     </div>
 
-    <div class="content" id="activity_dataviz" style="display: none"></div>
-
-    <div class="mdc-top-app-bar--fixed-adjust content" id="page3" style="display: none">
+    <div class="mdc-top-app-bar--fixed-adjust content" id="weather" style="display: none">
         <h1 style="font-weight:bold">Weather</h1>
     </div>
-    <div class="mdc-top-app-bar--fixed-adjust content" id="page4" style="display: none">
+    <div class="mdc-top-app-bar--fixed-adjust content" id="business" style="display: none">
     </div>
 
     <script src="script.js"></script>
@@ -281,7 +280,7 @@
                 lat: 41.8781,
                 lng: -87.6298
             };
-            var map = new google.maps.Map(document.getElementById('page4'), {
+            var map = new google.maps.Map(document.getElementById('business'), {
                 zoom: 10,
                 center: chicago
             });
@@ -327,7 +326,6 @@
         var endpoint2 = "https://api.openweathermap.org/data/2.5/weather";
         var query2 = endpoint2 + "?q=Chicago,us&APPID=c904248515d72f67dd5a0f990b1f727f";
         $.get(query2, function(response2) {
-            console.log(response2)
             
             var d1 = $('<div class="mdc-card my-card">');
               var d2 = $('<div class="mdc-card__primary-action my-card__primary-action" tabindex="0">');
@@ -347,7 +345,7 @@
                 d2.append(d5);
               d1.append(d2);
             
-            $("#page3").append(d1);
+            $("#weather").append(d1);
         });
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCapZ69aCbon_uaFxqK_SmrMXmRCocI9jQ&callback=initMap">
