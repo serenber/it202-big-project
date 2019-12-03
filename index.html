@@ -52,6 +52,12 @@
     <aside class="mdc-drawer mdc-drawer--modal" data-mdc-auto-init="MDCDrawer">
         <div class="mdc-drawer__content">
             <nav class="mdc-list">
+                <!--The page that loads initially -->
+                <a class="mdc-list-item mdc-list-item--activated" href="#home" aria-current="page">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
+                    <span class="mdc-list-item__text sr-only">Home</span>
+                </a>
+                
                 <a class="mdc-list-item mdc-list-item--activated" href="#page1" aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">page1</i>
                     <span class="mdc-list-item__text">Pet Profiles</span>
@@ -89,6 +95,16 @@
         </div>
     </header>
 
+    <div class="mdc-top-app-bar--fixed-adjust content" id="home">
+      <h1 style="font-weight:bold">Welcome!</h1>
+    <p style="color:gray">
+        On the Pet Profiles page you can add and see all pets currently being tracked.<br>
+        On the Activity Tracker page you can monitor your pet's energy levels.<br>
+        On the Weather page you can see the current weather conditions.<br>
+        On the Local Businesses page you can see all businesses registered in Chicago that are pet related.<br>
+    </p>
+  </div>
+    
     <div class="mdc-top-app-bar--fixed-adjust content" id="page1" style="display: none">
         <h1 style="font-weight:bold">Pet Profiles</h1>
         <p style="color:gray">
@@ -207,7 +223,11 @@
                 alert(name + " added!")
             });
         });
+        
+//I'd like to figure out some way of displaying the information currently in the DB about the pet's activity level
+  //preferrably a graph, but for now a table might have to do. (Something like the profiles page)
 
+        //adds the pet's information to the profile display table
         function showPet(pet) {
             var tr = $("<tr>");
             tr.addClass("mdc-data-table__row");
@@ -229,9 +249,7 @@
             $("#petsList").append(tr);
         }
 
-        function saveData(data, activity) {
-            data.push([activity.id, activity.pet_activity]);
-        }
+        //to use the camera on the device
         const player = document.getElementById('player');
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
@@ -242,6 +260,7 @@
         captureButton.addEventListener('click', () => {
             // Draw the video frame to the canvas.
             context.drawImage(player, 0, 0, canvas.width, canvas.height);
+//I'd like to figure out how to save the picture to the DB rather than just showing it below the video stream on the page
             //save it to the DB
             //get the DB object
             //update it to inclue a picture
@@ -253,10 +272,9 @@
             player.srcObject = stream;
         });
     </script>
+    
     <script>
-        // This example displays a marker at the center of Australia.
-         // When the user clicks the marker, an info window opens.
-
+        //initializes the map and centers it on chicago
         function initMap() {
             //41.8781° N, 87.6298° W
             var chicago = {
@@ -267,7 +285,10 @@
                 zoom: 10,
                 center: chicago
             });
+            
             //generate the database query for the map info
+//eventually I'd like to use the device's location to figure out the pet businesses near the user
+  //or allow them to enter their location if allowing the device's features to be used is an issue for them.
             var markers = [];
             var endpoint = "https://data.cityofchicago.org/resource/uupf-x98q.json";
             var query = endpoint + "?$where=business_activity%20like%20%27%25Animal%25%27%20or%20license_description%20like%20%27%25Animal%25%27";
@@ -302,6 +323,7 @@
         }
         
         //generate the database query for the weather info
+//I'd also like to make this use the device info/user input to get where rather than have it permanently set to chicago
         var endpoint2 = "https://api.openweathermap.org/data/2.5/weather";
         var query2 = endpoint2 + "?q=Chicago,us&APPID=c904248515d72f67dd5a0f990b1f727f";
         $.get(query2, function(response2) {
@@ -343,14 +365,14 @@ function goBack() {
 }
 </script> -->
 
-    <!--     <script>
+        <script>
         // register the service worker for offline use
         if('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(function() {
                 console.log("Service Worker Registered");
             });
         }
-    </script> -->
+    </script>
 </body>
 
 </html>
