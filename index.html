@@ -329,12 +329,14 @@
             
             var d1 = $('<div class="mdc-card my-card">');
               var d2 = $('<div class="mdc-card__primary-action my-card__primary-action" tabindex="0">');
-                var d3 = $('<div class="mdc-card__media mdc-card__media--16-9 my-card__media" style="background-image: url(&quot;https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg&quot;);">');
+//At some point I'd like to make this picture change daily
+                var d3 = $('<div class="mdc-card__media mdc-card__media--16-9 my-card__media" style="background-image: url(&quot;https://www.nationalgeographic.com/content/dam/animals/pictures/hero/reptiles-hero.adapt.1900.1.jpg&quot;);">');
                 d2.append(d3);
                 var d4 = $('<div class="my-card__primary">');
                   var h2 = $('<h2 class="my-card__title mdc-typography mdc-typography--headline6"></h2>');
-                    h2.text("Temperature: " + response2.main.temp)
-//I need to figure out what units are being used for this temperature
+                    var tempk = response2.main.temp;// XD It's in Kelvin
+                    var tempf = ((tempk - 273.15) * 1.8) + 32
+                    h2.text("Temperature: " + tempf.toFixed(2) + " ℉")
                   var h3 = $('<h3 class="my-card__subtitle mdc-typography mdc-typography--subtitle2"></h3>');
                     h3.text(response2.weather[0].description);
                   d4.append(h2);
