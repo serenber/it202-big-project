@@ -203,6 +203,30 @@
         });
         $("#btnCamera").on("click", function() {
             hideScreens();
+            
+            //to use the camera on the device
+        const player = document.getElementById('player');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const captureButton = document.getElementById('capture');
+        const constraints = {
+            video: true,
+        };
+        captureButton.addEventListener('click', () => {
+            // Draw the video frame to the canvas.
+            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+//I'd like to figure out how to save the picture to the DB rather than just showing it below the video stream on the page
+            //save it to the DB
+            //get the DB object
+            //update it to inclue a picture
+            //https://stackoverflow.com/questions/11217309/how-do-i-update-data-in-indexeddb
+            //https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put
+        });
+         // Attach the video stream to the video element and autoplay.
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            player.srcObject = stream;
+        });
+            
             $("#camera").show();
         });
          //show all pets in the DB
@@ -247,29 +271,6 @@
             tr.append(td4);
             $("#petsList").append(tr);
         }
-
-        //to use the camera on the device
-        const player = document.getElementById('player');
-        const canvas = document.getElementById('canvas');
-        const context = canvas.getContext('2d');
-        const captureButton = document.getElementById('capture');
-        const constraints = {
-            video: true,
-        };
-        captureButton.addEventListener('click', () => {
-            // Draw the video frame to the canvas.
-            context.drawImage(player, 0, 0, canvas.width, canvas.height);
-//I'd like to figure out how to save the picture to the DB rather than just showing it below the video stream on the page
-            //save it to the DB
-            //get the DB object
-            //update it to inclue a picture
-            //https://stackoverflow.com/questions/11217309/how-do-i-update-data-in-indexeddb
-            //https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put
-        });
-         // Attach the video stream to the video element and autoplay.
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            player.srcObject = stream;
-        });
     </script>
     
     <script>
