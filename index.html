@@ -36,13 +36,12 @@
             margin: 0;
             padding: 0;
         }
-        
         .my-card-content {
-          padding: 16px;
+            padding: 16px;
         }
         .my-card {
-          height: 350px;
-          width: 350px;
+            height: 350px;
+            width: 350px;
         }
     </style>
 
@@ -57,7 +56,7 @@
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
                     <span class="mdc-list-item__text sr-only">Home</span>
                 </a>
-                
+
                 <a class="mdc-list-item mdc-list-item--activated" href="#profiles" aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">profiles</i>
                     <span class="mdc-list-item__text">Pet Profiles</span>
@@ -96,16 +95,17 @@
     </header>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="home">
-      <h1 style="font-weight:bold">Welcome!</h1>
+        <h1 style="font-weight:bold">Welcome!</h1>
 <!-- I wish that all this stuff looked a bit nicer than it does -->
-    <p style="color:gray">
-        On the Pet Profiles page you can add and see all pets currently being tracked.<br>
-        On the Activity Tracker page you can monitor your pet's energy levels.<br>
-        On the Weather page you can see the current weather conditions.<br>
-        On the Local Businesses page you can see all businesses registered in Chicago that are pet related.<br>
-    </p>
-  </div>
-    
+        <p style="color:gray">
+            On the Pet Profiles page you can add and see all pets currently being tracked.
+            <br>On the Activity Tracker page you can monitor your pet's energy levels.
+            <br>On the Weather page you can see the current weather conditions.
+            <br>On the Local Businesses page you can see all businesses registered in Chicago that are pet related.
+            <br>
+        </p>
+    </div>
+
     <div class="mdc-top-app-bar--fixed-adjust content" id="profiles" style="display: none">
         <h1 style="font-weight:bold">Pet Profiles</h1>
         <p style="color:gray">
@@ -203,30 +203,28 @@
         });
         $("#btnCamera").on("click", function() {
             hideScreens();
-            
             //to use the camera on the device
-        const player = document.getElementById('player');
-        const canvas = document.getElementById('canvas');
-        const context = canvas.getContext('2d');
-        const captureButton = document.getElementById('capture');
-        const constraints = {
-            video: true,
-        };
-        captureButton.addEventListener('click', () => {
-            // Draw the video frame to the canvas.
-            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+            const player = document.getElementById('player');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+            const captureButton = document.getElementById('capture');
+            const constraints = {
+                video: true,
+            };
+            captureButton.addEventListener('click', () => {
+                // Draw the video frame to the canvas.
+                context.drawImage(player, 0, 0, canvas.width, canvas.height);
 //I'd like to figure out how to save the picture to the DB rather than just showing it below the video stream on the page
-            //save it to the DB
-            //get the DB object
-            //update it to inclue a picture
-            //https://stackoverflow.com/questions/11217309/how-do-i-update-data-in-indexeddb
-            //https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put
-        });
-         // Attach the video stream to the video element and autoplay.
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            player.srcObject = stream;
-        });
-            
+                //save it to the DB
+                //get the DB object
+                //update it to inclue a picture
+                //https://stackoverflow.com/questions/11217309/how-do-i-update-data-in-indexeddb
+                //https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put
+            });
+            // Attach the video stream to the video element and autoplay.
+            navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+                player.srcObject = stream;
+            });
             $("#camera").show();
         });
          //show all pets in the DB
@@ -246,11 +244,10 @@
                 alert(name + " added!")
             });
         });
-        
 //I'd like to figure out some way of displaying the information currently in the DB about the pet's activity level
   //preferrably a graph, but for now a table might have to do. (Something like the profiles page)
+  //adds the pet's information to the profile display table
 
-        //adds the pet's information to the profile display table
         function showPet(pet) {
             var tr = $("<tr>");
             tr.addClass("mdc-data-table__row");
@@ -272,9 +269,10 @@
             $("#petsList").append(tr);
         }
     </script>
-    
+
     <script>
         //initializes the map and centers it on chicago
+
         function initMap() {
             //41.8781° N, 87.6298° W
             var chicago = {
@@ -285,10 +283,9 @@
                 zoom: 10,
                 center: chicago
             });
-            
             //generate the database query for the map info
 //eventually I'd like to use the device's location to figure out the pet businesses near the user
-  //or allow them to enter their location if allowing the device's features to be used is an issue for them.
+//or allow them to enter their location if allowing the device's features to be used is an issue for them.
             var markers = [];
             var endpoint = "https://data.cityofchicago.org/resource/uupf-x98q.json";
             var query = endpoint + "?$where=business_activity%20like%20%27%25Animal%25%27%20or%20license_description%20like%20%27%25Animal%25%27";
@@ -298,9 +295,7 @@
                     markers[i].setMap(null);
                 }
                 markers = [];
-                
                 $.each(response, function(i, v) {
-                    
                     //create the info window and marker for the map
                     var contentString = '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h1 id="firstHeading" class="firstHeading">' + v.doing_business_as_name + '</h1>' + '<div id="bodyContent">' + '<p> ' + v.business_activity + ' ' + v.address;
                     var infowindow = new google.maps.InfoWindow({
@@ -321,33 +316,30 @@
                 });
             });
         }
-        
-        //generate the database query for the weather info
+         //generate the database query for the weather info
 //I'd also like to make this use the device info/user input to get where rather than have it permanently set to chicago
         var endpoint2 = "https://api.openweathermap.org/data/2.5/weather";
         var query2 = endpoint2 + "?q=Chicago,us&APPID=c904248515d72f67dd5a0f990b1f727f";
         $.get(query2, function(response2) {
-            
             var d1 = $('<div class="mdc-card my-card">');
-              var d2 = $('<div class="mdc-card__primary-action my-card__primary-action" tabindex="0">');
+            var d2 = $('<div class="mdc-card__primary-action my-card__primary-action" tabindex="0">');
 //At some point I'd like to make this picture change daily
-                var d3 = $('<div class="mdc-card__media mdc-card__media--16-9 my-card__media" style="background-image: url(&quot;https://www.nationalgeographic.com/content/dam/animals/pictures/hero/reptiles-hero.adapt.1900.1.jpg&quot;);">');
-                d2.append(d3);
-                var d4 = $('<div class="my-card__primary">');
-                  var h2 = $('<h2 class="my-card__title mdc-typography mdc-typography--headline6"></h2>');
-                    var tempk = response2.main.temp;// XD It's in Kelvin
-                    var tempf = ((tempk - 273.15) * 1.8) + 32
-                    h2.text("Temperature: " + tempf.toFixed(2) + " ℉")
-                  var h3 = $('<h3 class="my-card__subtitle mdc-typography mdc-typography--subtitle2"></h3>');
-                    h3.text(response2.weather[0].description);
-                  d4.append(h2);
-                  d4.append(h3);
-                d2.append(d4);
-                var d5 = $('<div class="my-card__secondary mdc-typography mdc-typography--body2"></div>');
-                  d5.text("Humidity: " + response2.main.humidity);
-                d2.append(d5);
-              d1.append(d2);
-            
+            var d3 = $('<div class="mdc-card__media mdc-card__media--16-9 my-card__media" style="background-image: url(&quot;https://www.nationalgeographic.com/content/dam/animals/pictures/hero/reptiles-hero.adapt.1900.1.jpg&quot;);">');
+            d2.append(d3);
+            var d4 = $('<div class="my-card__primary">');
+            var h2 = $('<h2 class="my-card__title mdc-typography mdc-typography--headline6"></h2>');
+            var tempk = response2.main.temp; // XD It's in Kelvin
+            var tempf = ((tempk - 273.15) * 1.8) + 32
+            h2.text("Temperature: " + tempf.toFixed(2) + " ℉")
+            var h3 = $('<h3 class="my-card__subtitle mdc-typography mdc-typography--subtitle2"></h3>');
+            h3.text(response2.weather[0].description);
+            d4.append(h2);
+            d4.append(h3);
+            d2.append(d4);
+            var d5 = $('<div class="my-card__secondary mdc-typography mdc-typography--body2"></div>');
+            d5.text("Humidity: " + response2.main.humidity);
+            d2.append(d5);
+            d1.append(d2);
             $("#weather").append(d1);
         });
     </script>
@@ -366,7 +358,7 @@ function goBack() {
 }
 </script> -->
 
-        <script>
+    <script>
         // register the service worker for offline use
         if('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(function() {
