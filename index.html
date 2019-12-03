@@ -116,7 +116,7 @@
             <button id="btnShow">Show</button>
             <button id="btnCamera">Camera</button>
         </p>
-
+        <!-- The table element -->
         <div class="mdc-data-table">
             <table class="mdc-data-table__table" aria-label="Pet Profiles">
                 <thead>
@@ -147,7 +147,24 @@
             <input type="text" id="petName2" placeholder="Enter your pet's name">
             <input type="text" id="petActivity" placeholder="Enter your pet's activity level">
             <button id="btnSave2">Save</button>
+            <button id="btnShow2">Show</button>
         </p>
+        
+        <!-- The table element -->
+        <div class="mdc-data-table">
+            <table class="mdc-data-table__table" aria-label="Pet Activity">
+                <thead>
+                    <tr class="mdc-data-table__header-row">
+                        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Name</th>
+                        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Activity Level</th>
+                        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="activityList" class="mdc-data-table__content">
+                </tbody>
+            </table>
+        </div>
+        
     </div>
 
     <div class="mdc-top-app-bar--fixed-adjust content" id="weather" style="display: none">
@@ -244,6 +261,12 @@
                 alert(name + " added!")
             });
         });
+        //show all activities in the DB
+        $("#btnShow2").on("click", function() {
+            $("#activityList").empty()
+            db.activities.each(activity => showActivity(activity));
+        });
+        
 //I'd like to figure out some way of displaying the information currently in the DB about the pet's activity level
   //preferrably a graph, but for now a table might have to do. (Something like the profiles page)
   //adds the pet's information to the profile display table
@@ -267,6 +290,23 @@
             td4.addClass("mdc-data-table__cell");
             tr.append(td4);
             $("#petsList").append(tr);
+        }
+        
+        function showActivity(activity) {
+            var tr = $("<tr>");
+            tr.addClass("mdc-data-table__row");
+            var td1 = $("<td>");
+            td1.addClass("mdc-data-table__cell");
+            td1.text(activity.pet_name);
+            tr.append(td1);
+            var td2 = $("<td>");
+            td2.addClass("mdc-data-table__cell mdc-data-table__cell--numeric");
+            td2.text(activity.pet_activity);
+            tr.append(td2);
+            var td4 = $("<td>");
+            td4.addClass("mdc-data-table__cell");
+            tr.append(td4);
+            $("#activityList").append(tr);
         }
     </script>
 
